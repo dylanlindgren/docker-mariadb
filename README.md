@@ -64,4 +64,4 @@ WantedBy=multi-user.target
 ```
 Then you can start/stop/restart the container with the regular Systemd commands e.g. `systemctl start mariadb.service`.
 
-To automatically start the container when you restart enable the unit file with the command `systemctl enable mariadbservice`.
+To automatically start the container when you restart enable the unit file with the command `systemctl enable mariadb.service`.
