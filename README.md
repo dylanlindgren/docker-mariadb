@@ -9,7 +9,7 @@ This image is published in the [Docker Hub](https://registry.hub.docker.com/). S
 docker pull dylanlindgren/docker-mariadb
 ```
 ## Understanding the image
-This image adheres to the principle of having a docker container for each process. Therefore there is absolutely no need to jump inside the container during build or operation of the container.
+This image adheres to the principle of having a Docker container for each process.
 
 All data is redirected to the `/data/mariadb/data` location and when this is mapped to the host using the `-v` switch then the container is completely disposable.
 
