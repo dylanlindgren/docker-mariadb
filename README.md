@@ -56,7 +56,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker stop mariadb
 ExecStartPre=-/usr/bin/docker rm mariadb
 ExecStartPre=-/usr/bin/docker pull dylanlindgren/docker-mariadb
-ExecStart=/usr/bin/docker run --privileged=true -v /data/mariadb:/data/mariadb:rw -p 3306:3306 -d --name mariadb dylanlindgren/docker-mariadb
+ExecStart=/usr/bin/docker run --privileged=true -v /data/mariadb:/data/mariadb:rw -p 3306:3306 --name mariadb dylanlindgren/docker-mariadb
 ExecStop=/usr/bin/docker stop mariadb
 
 [Install]
