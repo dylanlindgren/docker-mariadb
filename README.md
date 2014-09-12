@@ -9,7 +9,20 @@ This image is published in the [Docker Hub](https://registry.hub.docker.com/). S
 docker pull dylanlindgren/docker-mariadb
 ```
 ## Understanding the image
-This image adheres to the principle of having a docker container for each process. Therefore ther is absolutely no need to jump inside the container.
+This image adheres to the principle of having a docker container for each process. Therefore there is absolutely no need to jump inside the container during build or operation of the container.
+
+All data is redirected to the `/data/mariadb/data` location and when this is mapped to the host using the `-v` switch then the container is completely disposable.
+
+The startup script (which is the containers default entrypoint) checks `/data/mariadb`, and if it's empty it initialises it by running the `/usr/bin/mysql_install_db` command, and then runs `/usr/bin/mysqld_safe` with an initial SQL file which ensures the database is securely configured for remote access. If the `/data/mariadb` folder contains data then it just runs `/usr/bin/mysqld_safe`.
+
+The steps that are performed to secure the database were taken from [howtolamp.com](http://howtolamp.com/lamp/mysql/5.6/securing/). In summary the script:
+
+- Deletes anonymous users
+- Deletes full access to the `test` database
+- Deletes full access to databases beginning in `test`
+- Deletes the `test` user
+- Sets the `root` password as `abc123` **Note - you should change this!!**
+- Creates a `docker` user with full permissions to all databases from all hosts with the password `docker` **Note - you should change this**
 
 ## Creating and running the container
 To create and run the container:
