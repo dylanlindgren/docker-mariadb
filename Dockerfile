@@ -1,26 +1,30 @@
-FROM centos:latest
+FROM centos:centos7
 
 MAINTAINER "Dylan Lindgren" <dylan.lindgren@gmail.com>
 
-# Install trusted CA's (needed in the environment this was developed for)
-ADD build/certs /tmp/certs
-RUN cat /tmp/certs >> /etc/pki/tls/certs/ca-bundle.crt
-
+# Install MariaDB
 ADD config/MariaDB.repo /etc/yum.repos.d/MariaDB.repo
 RUN yum update -y
 RUN yum install -y MariaDB-server MariaDB-client
 
+# Configure MariaDB
 ADD config/my.cnf /etc/my.cnf
 
-# DATA VOLUMES
-RUN mkdir -p /data/mariadb/
+# All the MariaDB data that you'd want to backup will be redirected here
+RUN mkdir /data
 VOLUME ["/data/mariadb"]
 
-# PORTS
+# Port 3306 is where MariaDB listens on
 EXPOSE 3306
 
-RUN /usr/bin/mysql_install_db --datadir=/data/mariadb --user=mysql
+# These scripts will be used to launch MariaDB and configure it
+# securely if no data exists in /data/mariadb
+ADD config/mariadb-start.sh /opt/bin/mariadb-start.sh 
+ADD config/mariadb-setup.sql /opt/bin/mariadb-setup.sql
+RUN chmod u=rwx /opt/bin/mariadb-start.sh
+RUN chown mysql:mysql /opt/bin/mariadb-start.sh /opt/bin/mariadb-setup.sql /data/mariadb
 
+# run all subsequent commands as the mysql user
 USER mysql
 
-ENTRYPOINT ["/usr/sbin/mysqld"]
+ENTRYPOINT ["/opt/bin/mariadb-start.sh"]
