@@ -20,7 +20,7 @@ The steps that are performed to secure the database were taken from [howtolamp.c
 - Deletes anonymous users
 - Deletes full access to the `test` database
 - Deletes full access to databases beginning in `test`
-- Deletes the `test` user
+- Deletes the `test` database
 - Sets the `root` password as `abc123` **Note - you should change this!!**
 - Creates a `docker` user with full permissions to all databases from all hosts with the password `docker` **Note - you should change this**
 
